@@ -1,4 +1,6 @@
 # marvel-character-finder
 
+## Description
 
-# Tech Stack
+
+## Tech Stack
