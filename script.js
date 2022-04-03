@@ -1,3 +1,4 @@
+// get timestamp
 var ts = new Date().getTime();
 var privKey = "b864417049b272439dc6bb1fdaee4995343fc50b";
 var pubKey = "e096fc0b2d2e3a94fbbc2ce9164e4bef" ;
