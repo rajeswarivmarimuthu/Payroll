@@ -1,52 +1,52 @@
 // get timestamp
-var ts = new Date().getTime();
-var privKey = "b864417049b272439dc6bb1fdaee4995343fc50b";
-var pubKey = "e096fc0b2d2e3a94fbbc2ce9164e4bef" ;
-var message = ts+privKey+pubKey;
-var hashKey = CryptoJS.MD5(message);
-var characterBaseUrl = "http://gateway.marvel.com/v1/public/characters?"
+// var ts = new Date().getTime();
+// var privKey = "b864417049b272439dc6bb1fdaee4995343fc50b";
+// var pubKey = "e096fc0b2d2e3a94fbbc2ce9164e4bef" ;
+// var message = ts+privKey+pubKey;
+// var hashKey = CryptoJS.MD5(message);
+// var characterBaseUrl = "http://gateway.marvel.com/v1/public/characters?"
 
-var requestCharacterUrl = []; 
-for (let i = 0; i < 16; i++) {
-    var offset = i*100;
-    var url = characterBaseUrl + "ts=" + ts + "&apikey=" + pubKey + "&hash=" + hashKey + "&limit=100" + "&offset=" + offset;
-    requestCharacterUrl.push(url);
-}
-// console.log(requestCharacterUrl);
+// var requestCharacterUrl = []; 
+// for (let i = 0; i < 16; i++) {
+//     var offset = i*100;
+//     var url = characterBaseUrl + "ts=" + ts + "&apikey=" + pubKey + "&hash=" + hashKey + "&limit=100" + "&offset=" + offset;
+//     requestCharacterUrl.push(url);
+// }
 
-async function getCharacters() {
-    var characterList = [];
-    for (let i = 0; i < requestCharacterUrl.length; i++)   {
-        console.log('fetching', requestCharacterUrl[i]);
-        try {
-            var request = await fetch(requestCharacterUrl[i]);
-            var response = await request.json();
-            // console.log(response);
-            for(let j = 0; j < response.data.results.length; j++) {
-                var description = response.data.results[j].description;
-                // console.log(description);
-                if (description) {
-                    var characterName = response.data.results[j].name;
-                    var characterSearchString = characterName.replace(/[&#,+()$~%'":*?<>{}]/g, '');
-                    characterSearchString = characterSearchString.replace(/[-\/\\]/g, ' ');
-                    characterSearchString = characterSearchString.split(' ').slice(0, 2).join(' ');
-                    var characterId = response.data.results[j].id;
-                    var characterObj = {
-                        name: characterName,
-                        searchString: characterSearchString,
-                        id: characterId
-                    };
-                    characterList.push(characterObj);
-                }
-            }
-        }
-        catch (e) {
-            console.error(e.message);
-        }
-    }
-    console.log(characterList);
-};
-// getCharacters();
+// async function getCharacters() {
+//     var characterList = [];
+//     for (let i = 0; i < requestCharacterUrl.length; i++)   {
+//         console.log('fetching', requestCharacterUrl[i]);
+//         try {
+//             var request = await fetch(requestCharacterUrl[i]);
+//             var response = await request.json();
+//             // console.log(response);
+//             for(let j = 0; j < response.data.results.length; j++) {
+//                 var description = response.data.results[j].description;
+//                 // console.log(description);
+//                 if (description) {
+//                     var characterName = response.data.results[j].name;
+//                     var characterSearchString = characterName.replace(/[&#,+()$~%'":*?<>{}]/g, '');
+//                     characterSearchString = characterSearchString.replace(/[-\/\\]/g, ' ');
+//                     characterSearchString = characterSearchString.split(' ').slice(0, 2).join(' ');
+//                     var characterId = response.data.results[j].id;
+//                     var characterObj = {
+//                         name: characterName,
+//                         searchString: characterSearchString,
+//                         id: characterId
+//                     };
+//                     characterList.push(characterObj);
+//                 }
+//             }
+//         }
+//         catch (e) {
+//             console.error(e.message);
+//         }
+//     }
+//     console.log(JSON.stringify(characterList));
+// };
+
+console.log(characterList);
 
 function searchCharacter(id) {
     var requestById = "http://gateway.marvel.com/v1/public/characters/" + id + "?ts=" + ts + "&apikey=" + pubKey + "&hash=" + hashKey;
@@ -73,6 +73,7 @@ function searchCharacter(id) {
         console.log(characterComicSeriesUrl);
     });
 }
+
 //searchCharacter(1009577)
 
 function searchMovie(query) {
