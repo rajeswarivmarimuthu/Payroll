@@ -6,6 +6,7 @@ var message = ts+privKey+pubKey;
 var hashKey = CryptoJS.MD5(message);
 var characterBaseUrl = "http://gateway.marvel.com/v1/public/characters?"
 
+console.log(characterBaseUrl);
 // var requestCharacterUrl = []; 
 // for (let i = 0; i < 16; i++) {
 //     var offset = i*100;
