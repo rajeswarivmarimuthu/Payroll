@@ -98,4 +98,40 @@ function searchMovie(query) {
         console.log(posterPath);
     })
 }
-searchMovie("Iron Man")    
+// searchMovie("Iron Man")
+
+// sets character object to local storage
+function addToLocalStorage() {
+    var searchedCharacters = JSON.parse(localStorage.getItem("searched_characters"));
+    if (searchedCharacters == null) {
+        searchedCharacters = []
+    };
+    var characterObj = {
+        "name":  characterName,
+        "id": characterId,
+        "search_string": searchString,
+        "thumbnail_url": characterThumbnailUrl, 
+    };
+    localStorage.setItem("character", JSON.stringify(characterObj));
+    searchedCharacters.push(characterObj);
+    localStorage.setItem("searched_characters", JSON.stringify(searchedCharacters));
+};
+
+// gets last 5 character objects from local storage
+function getLast5FromLocalStorage() {
+    var storedCharacters = JSON.parse(localStorage.getItem("searched_characters"));
+    if (storedCharacters == null) {
+        storedCharacters = [];
+    } else if (storedCharacters.length > 5) {
+        storedCharacters = storedCharacters.slice(-5);
+    };
+    if (storedCharacters.length > 0) {
+        var j = 0;
+        var characterOrderDesc = [];
+        for (let i = storedCharacters.length - 1; j < storedCharacters.length & j < 5; i--) {
+            characterOrderDesc.push(storedCharacters[i]);
+            j++;
+        }
+    }
+    return characterOrderDesc;
+}
