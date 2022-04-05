@@ -55,26 +55,19 @@ function searchCharacter(id) {
         return response.json();
     })
     .then(function (d) {
-        console.log(d);
-        
-        var characterName = d.data.results[0].name;
-        console.log(characterName);
-    
-        var characterId = d.data.results[0].id;
-        console.log(characterId);
+        var characterInfo = {
+            name: d.data.results[0].name,
+            id: d.data.results[0].id, // delete?
+            description: d.data.results[0].description,
+            thumbnail: d.data.results[0].thumbnail.path + "." + d.data.results[0].thumbnail.extension,
+            comics: d.data.results[0].urls[0].url
+        };
 
-        var characterDescription = d.data.results[0].description;
-        console.log(characterDescription);
-
-        var characterThumbnailUrl = d.data.results[0].thumbnail.path + "." + d.data.results[0].thumbnail.extension;
-        console.log(characterThumbnailUrl);
-
-        var characterComicSeriesUrl = d.data.results[0].urls[0].url;
-        console.log(characterComicSeriesUrl);
+        // TODO append info
     });
 }
 
-// searchCharacter(1009577)
+//currentloginid().then(value => console.log(value));
 
 function searchMovie(query) {
     var requestByQuery = "https://api.themoviedb.org/3/search/movie?api_key=c2d17b4b68756938636de8ad845e6940&query=" + query + "&page=1"
@@ -83,19 +76,23 @@ function searchMovie(query) {
         return response.json();
     })
     .then(function (data) {
-        console.log(data);
+        var top5Movies = [];
 
-        var movieTitle =  data.results[0].title;
-        console.log(movieTitle);
+        for (i = 0; i < 5; i++) {
 
-        var releaseDate = data.results[0].release_date;
-        console.log(releaseDate);
+        var movie = {
+            title: data.results[i].title,
+            year: data.results[i].release_date.slice(0, 4),
+            overview: data.results[i].overview,
+            posterPath: "https://image.tmdb.org/t/p/w500" + data.results[i].poster_path
+        };
 
-        var overView = data.results[0].overview;
-        console.log(overView);
-
-        var posterPath = "https://image.tmdb.org/t/p/w500" + data.results[0].poster_path;
-        console.log(posterPath);
-    })
+        top5Movies.push(movie)
+        }
+        // TODO append info
+        
+        console.log(top5Movies);
+    });
 }
-searchMovie("Iron Man")    
+
+searchMovie("Spiderman");
