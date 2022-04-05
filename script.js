@@ -1,10 +1,10 @@
 // get timestamp
-// var ts = new Date().getTime();
-// var privKey = "b864417049b272439dc6bb1fdaee4995343fc50b";
-// var pubKey = "e096fc0b2d2e3a94fbbc2ce9164e4bef" ;
-// var message = ts+privKey+pubKey;
-// var hashKey = CryptoJS.MD5(message);
-// var characterBaseUrl = "http://gateway.marvel.com/v1/public/characters?"
+var ts = new Date().getTime();
+var privKey = "b864417049b272439dc6bb1fdaee4995343fc50b";
+var pubKey = "e096fc0b2d2e3a94fbbc2ce9164e4bef" ;
+var message = ts+privKey+pubKey;
+var hashKey = CryptoJS.MD5(message);
+var characterBaseUrl = "http://gateway.marvel.com/v1/public/characters?"
 
 // var requestCharacterUrl = []; 
 // for (let i = 0; i < 16; i++) {
