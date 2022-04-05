@@ -83,22 +83,24 @@ function searchMovie(query) {
         return response.json();
     })
     .then(function (data) {
-        console.log(data);
 
-        var movieTitle =  data.results[0].title;
-        console.log(movieTitle);
+        var first5 = data.results.slice(0, 5);
 
-        var releaseDate = data.results[0].release_date;
-        console.log(releaseDate);
+        var first5Movies = [];
+        for(let i = 0; i < first5.length; i++) {
 
-        var overView = data.results[0].overview;
-        console.log(overView);
-
-        var posterPath = "https://image.tmdb.org/t/p/w500" + data.results[0].poster_path;
-        console.log(posterPath);
+            var movieObj = {
+                "movieTitle": first5[i].title,
+                "releaseDate": first5[i].release_date,
+                "overView": first5[i].overview,
+                "posterPath": "https://image.tmdb.org/t/p/w500" + first5[i].poster_path,
+            }
+            first5Movies.push(movieObj);
+        }
+        console.log(first5Movies)
     })
 }
-// searchMovie("Iron Man")
+searchMovie("Iron Man")
 
 // sets character object to local storage
 function addToLocalStorage() {
