@@ -6,6 +6,21 @@ var message = ts+privKey+pubKey;
 var hashKey = CryptoJS.MD5(message);
 var characterBaseUrl = "http://gateway.marvel.com/v1/public/characters?"
 
+// global variables
+import { characterList } from "./characters";
+
+// content elements
+var charContainerEl = document.getElementById(""); // TODO
+var charThumbnail = document.getElementById(""); // TODO
+var movieContainerEl = document.getElementById(""); // TODO
+
+// form elements
+var inputEl = document.getElementById("searchCharName");
+var buttonEl = document.getElementById("submitBtn");
+
+// event listeners
+buttonEl.addEventListener("click", searchId);
+
 // var requestCharacterUrl = []; 
 // for (let i = 0; i < 16; i++) {
 //     var offset = i*100;
@@ -48,6 +63,27 @@ var characterBaseUrl = "http://gateway.marvel.com/v1/public/characters?"
 
 // console.log(characterList);
 
+// main search function
+function searchId(event) {
+    event.preventDefault();
+    var charName = inputEl.value;
+    var charId;
+    for (i = 0; i < characterList.length; i++) {
+        if (characterList[i].searchString == charName) {
+            charId = characterList[i].id;
+            i = characterList.length;
+        }
+    }
+    if (!charId) {
+        console.log("Character not found"); //temp
+        return;
+    }
+
+    searchCharacter(charId);
+    searchMovie(charName);
+}
+
+
 function searchCharacter(id) {
     var requestById = "http://gateway.marvel.com/v1/public/characters/" + id + "?ts=" + ts + "&apikey=" + pubKey + "&hash=" + hashKey;
     fetch(requestById)
@@ -55,7 +91,8 @@ function searchCharacter(id) {
         return response.json();
     })
     .then(function (d) {
-        var characterInfo = {
+        console.log(d);
+        var charInfo = {
             name: d.data.results[0].name,
             id: d.data.results[0].id, // delete?
             description: d.data.results[0].description,
@@ -64,6 +101,18 @@ function searchCharacter(id) {
         };
 
         // TODO append info
+        var newImg = document.createElement("img");
+        newImg.setAttribute("src", charInfo.thumbnail);
+        newImg.setAttribute("alt", charInfo.name);
+        charThumbnail.append(newImg);
+
+        var newH2 = document.createElement("h2");
+        newH2.textContent = charInfo.name;
+        var newP = document.createElement("p");
+        newP.textContent = charInfo.description;
+        var newA = document.createElement("a");
+        newA.textContent = "See Comics";
+        newA.setAttribute("href", charInfo.comics);
     });
 }
 
@@ -90,9 +139,11 @@ function searchMovie(query) {
         top5Movies.push(movie)
         }
         // TODO append info
+
+
         
         console.log(top5Movies);
     });
 }
 
-searchMovie("Spiderman");
+// searchMovie("Spiderman");
