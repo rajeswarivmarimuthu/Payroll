@@ -46,7 +46,7 @@ var characterBaseUrl = "http://gateway.marvel.com/v1/public/characters?"
 //     console.log(JSON.stringify(characterList));
 // };
 
-console.log(characterList);
+// console.log(characterList);
 
 function searchCharacter(id) {
     var requestById = "http://gateway.marvel.com/v1/public/characters/" + id + "?ts=" + ts + "&apikey=" + pubKey + "&hash=" + hashKey;
@@ -74,7 +74,7 @@ function searchCharacter(id) {
     });
 }
 
-//searchCharacter(1009577)
+// searchCharacter(1009577)
 
 function searchMovie(query) {
     var requestByQuery = "https://api.themoviedb.org/3/search/movie?api_key=c2d17b4b68756938636de8ad845e6940&query=" + query + "&page=1"
@@ -98,4 +98,4 @@ function searchMovie(query) {
         console.log(posterPath);
     })
 }
-// searchMovie("Iron Man")    
+searchMovie("Iron Man")    
