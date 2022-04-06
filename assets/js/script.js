@@ -74,7 +74,7 @@ function searchCharacter(id) {
     });
 }
 
-// searchCharacter(1009577)
+//searchCharacter(1009577)
 
 function searchMovie(query) {
     var requestByQuery = "https://api.themoviedb.org/3/search/movie?api_key=c2d17b4b68756938636de8ad845e6940&query=" + query + "&page=1"
