@@ -116,6 +116,7 @@ function searchCharacter(id) {
     });
 }
 
+//searchCharacter(1009577)
 //currentloginid().then(value => console.log(value));
 
 function searchMovie(query) {
