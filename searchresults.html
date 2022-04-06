@@ -5,95 +5,108 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./assets/css/style.css"></script>
     <title>Marvel Character Finder</title>
   </head>
   <body>
       <!-- this is the search block in the search results page  -->
     <section class = "h-15 flex justify-center items-center" >
         <form class = 'sm:w-11/12 md:w-8/12 lg:w-6/12 flex justify-center items-center'>
-            <input name="searchChar" id="searchCharName" placeholder = 'Search your favorite Marvel Character...' type="text" autofocus="true" required class="appearance-none rounded-none relative block w-full  px-3 py-2 m-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm" />
-            <button id= 'submitBtn' type="submit" class="group relative flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-full sm:w-8/12 md:w-4/12 lg:w-3/12 text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                <span class="absolute left-0 inset-y-0 flex items-center">
-                  <svg class="h-5 w-10 text-red-500 group-hover:text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-                  </svg>
-                </span>
+            <input name="searchChar" id="searchCharName" placeholder = 'Search your favorite Marvel Character...' type="text" autofocus="true" required class="appearance-none rounded-none relative block w-full  px-3 py-2 m-3 border border-gray-200 placeholder-gray-500 text-gray-900 rounded-full focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm" />
+            <button id= 'submitBtn' type="submit" class="flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-full sm:w-8/12 md:w-4/12 lg:w-3/12 text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                 Search
               </button> 
           </form>
     </section>
 
     <!-- This is the section where the character thumbnail and their attributes are displayed  -->
-    <section class = "h-45 border border-gray-300 flex justify-left items-left static m-2 p-2" id="characterContainer"> 
+    <section class = "h-45 border border-gray-200 flex justify-left items-center content-center static m-2 p-2" id="characterContainer"> 
         <!-- image display -->
-        <div class = "static" id="characterThumbNail" >
+        <div class = "p-5 static" id="characterThumbNail" >
             <div id="characterCard" class="object-contain rounded-lg m-2 p-2 h-80 w-60 shadow-lg">
                 <a href="#">
-                    <img class="rounded-lg" src="https://static.wikia.nocookie.net/heroes-and-villain/images/f/fc/AoU_Hulk_01.png/revision/latest?cb=20181015193439" alt="" />
+                    <img class="rounded-lg" id="charImage" src="https://static.wikia.nocookie.net/heroes-and-villain/images/f/fc/AoU_Hulk_01.png/revision/latest?cb=20181015193439" alt="" />
                 </a>
             </div>
     
         </div>
         <!-- Character attributes -->
-        <div class = "inline-block" id="characterAttributes">
-
+        <div class = "inline-block m-2 p-2" id="characterAttributes">
+            <div class="font-bold text-xl mb-2" id="charName">HULK</div>
+            <p class="font-light text-gray-700 text-base">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.</p>
+            <a class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600" href="https://www.themoviedb.org/list/92600" alt="comic list">Interesting list of comics</a>
         </div>
 
     </section>
    
     <!-- Movie Section  -->
-    <section class = "h-45 border border-gray-300 flex justify-center items-center static m-2 p-2" id="moviesContainer"> 
+    <section class = "h-45 border border-gray-200 flex justify-center items-center static m-2 p-2" id="moviesContainer"> 
         <div class="p-5 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-5">  
             <!--Card 1-->
-            <div class="max-w-sm rounded-lg overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
-            <img class="w-full" src="https://image.tmdb.org/t/p/w500/ya7KoVn8lHh9TagGmDgDTnUb7mi.jpg" alt="Mountain">
+            <div class="max-w-sm rounded-lg border border-red-200 overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
+            <img class="w-full" id="movieImage" src="https://image.tmdb.org/t/p/w500/ya7KoVn8lHh9TagGmDgDTnUb7mi.jpg" alt="The Sting">
             <div class="px-4 py-4">
-                <div class="font-bold text-xl mb-2">Mountain</div>
-                <p class="text-gray-700 text-base"> Release Date : <span id="releaseDate"></span></p>
-                <p class="text-gray-700 text-base">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
+                <div class="font-bold text-xl mb-2" id="movieTitle">THE STING</div>
+                <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p>
+                <p class="font-bold text-gray-700 text-base"> Synopsis : 
+                    <br>
+                    <span id="movieSynopsis" class="font-light text-gray-700 text-base">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
+                    </span>
                 </p>
             </div>
             </div>
             
-            <div class="max-w-sm rounded-lg overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
-                <img class="w-full" src="https://image.tmdb.org/t/p/w500//eivQmS3wqzqnQWILHLc4FsEfcXP.jpg" alt="Mountain">
+            <div class="max-w-sm rounded-lg border border-red-200 overflow-hidden hover:border-red-200 hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
+                <img class="w-full" id="movieImage" src="https://image.tmdb.org/t/p/w500//eivQmS3wqzqnQWILHLc4FsEfcXP.jpg" alt="Ant and the wasp">
                 <div class="px-4 py-4">
-                <div class="font-bold text-xl mb-2">Mountain</div>
-                <p class="text-gray-700 text-base"> Release Date : <span id="releaseDate"></span></p>
-                <p class="text-gray-700 text-base">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
+                <div class="font-bold text-xl mb-2" id="movieTitle">ANT AND THE WASP</div> 
+                <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p>
+                <p class="font-bold text-gray-700 text-base"> Synopsis : 
+                    <br>
+                    <span id="movieSynopsis" class="font-light text-gray-700 text-base">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
+                    </span>
                 </p>
                 </div>
             </div>
 
-        <div class="max-w-sm rounded-lg overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
-            <img class="w-full" src="https://image.tmdb.org/t/p/w500/iEpdQ5HeMfsETlSXqZJ6cCIEAtZ.jpg" alt="Mountain">
+        <div class="max-w-sm rounded-lg border border-red-200 overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
+            <img class="w-full" id="movieImage"  src="https://image.tmdb.org/t/p/w500/iEpdQ5HeMfsETlSXqZJ6cCIEAtZ.jpg" alt="Mountain">
             <div class="px-4 py-4">
-            <div class="font-bold text-xl mb-2">Mountain</div>
-            <p class="text-gray-700 text-base"> Release Date : <span id="releaseDate"></span></p>
-            <p class="text-gray-700 text-base">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
+            <div class="font-bold text-xl mb-2 " id="movieTitle">PORT ARTHUR MASSACRE</div>
+            <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p>
+            <p class="font-bold text-gray-700 text-base"> Synopsis : 
+                <br>
+                <span id="movieSynopsis" class="font-light text-gray-700 text-base">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
+                </span>
             </p>
             </div>
         </div>
-        <div class="max-w-sm rounded-lg overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
-            <img class="w-full" src="https://image.tmdb.org/t/p/w500/iEpdQ5HeMfsETlSXqZJ6cCIEAtZ.jpg" alt="Mountain">
+        <div class="max-w-sm rounded-lg border border-red-200 overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
+            <img class="w-full" id="movieImage" src="https://image.tmdb.org/t/p/w500/iEpdQ5HeMfsETlSXqZJ6cCIEAtZ.jpg" alt="Mountain">
             <div class="px-4 py-4">
-            <div class="font-bold text-xl mb-2">Mountain</div>
-            <p class="text-gray-700 text-base"> Release Date : <span id="releaseDate"></span></p>
-            <p class="text-gray-700 text-base">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
+            <div class="font-bold text-xl mb-2" id="movieTitle">PORT ARTHUR MASSACRE</div>
+            <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p>
+            <p class="font-bold text-gray-700 text-base"> Synopsis : 
+                <br>
+                <span id="movieSynopsis" class="font-light text-gray-700 text-base">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
+                </span>
             </p>
             </div>
         </div>
-        <div class="max-w-sm rounded-lg overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
-            <img class="w-full" src="https://image.tmdb.org/t/p/w500/iEpdQ5HeMfsETlSXqZJ6cCIEAtZ.jpg" alt="Mountain">
-            <p class="text-gray-700 text-base"> Release Date : <span id="releaseDate"></span></p>
+        <div class="max-w-sm rounded-lg border border-red-200 overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
+            <img class="w-full" id="movieImage" src="https://image.tmdb.org/t/p/w500/iEpdQ5HeMfsETlSXqZJ6cCIEAtZ.jpg" alt="Mountain">
             <div class="px-4 py-4">
-            <div class="font-bold text-xl mb-2">Mountain</div>
-            <p class="text-gray-700 text-base">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
+            <div class="font-bold text-xl mb-2" id="movieTitle">PORT ARTHUR MASSACRE</div>
+            <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p>
+            <p class="font-bold text-gray-700 text-base"> Synopsis : 
+                <br>
+                <span id="movieSynopsis" class="font-light text-gray-700 text-base">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
+                </span>
             </p>
             </div>
       </div>
