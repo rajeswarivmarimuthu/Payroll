@@ -10,7 +10,14 @@
   </head>
   <body>
       <!-- this is the search block in the search results page  -->
-    <section class = "h-15 flex justify-center items-center" >
+    <section class = "h-15 relative flex justify-center items-center" >
+            <div class="w-5 h-5 absolute inset-x-0.5 text-red-700 mx-4 px-4">
+                <a href="./index.html">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                </a>
+            </div>
         <form class = 'sm:w-11/12 md:w-8/12 lg:w-6/12 flex justify-center items-center'>
             <input name="searchChar" id="searchCharName" placeholder = 'Search your favorite Marvel Character...' type="text" autofocus="true" required class="appearance-none rounded-none relative block w-full  px-3 py-2 m-3 border border-gray-200 placeholder-gray-500 text-gray-900 rounded-full focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm" />
             <button id= 'submitBtn' type="submit" class="flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-full sm:w-8/12 md:w-4/12 lg:w-3/12 text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
@@ -23,7 +30,7 @@
     <section class = "h-45 border border-gray-200 flex justify-left items-center content-center static m-2 p-2" id="characterContainer"> 
         <!-- image display -->
         <div class = "p-5 static" id="characterThumbNail" >
-            <div id="characterCard" class="object-contain rounded-lg m-2 p-2 h-80 w-60 shadow-lg">
+            <div id="characterCard" class="object-contain border border-red-200 rounded-lg m-2 p-2 h-80 w-60 shadow-lg">
                 <a href="#">
                     <img class="rounded-lg" id="charImage" src="https://static.wikia.nocookie.net/heroes-and-villain/images/f/fc/AoU_Hulk_01.png/revision/latest?cb=20181015193439" alt="" />
                 </a>
@@ -46,13 +53,10 @@
             <div class="max-w-sm rounded-lg border border-red-200 overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
             <img class="w-full" id="movieImage" src="https://image.tmdb.org/t/p/w500/ya7KoVn8lHh9TagGmDgDTnUb7mi.jpg" alt="The Sting">
             <div class="px-4 py-4">
-                <div class="font-bold text-xl mb-2" id="movieTitle">THE STING</div>
-                <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p>
-                <p class="font-bold text-gray-700 text-base"> Synopsis : 
-                    <br>
-                    <span id="movieSynopsis" class="font-light text-gray-700 text-base">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
-                    </span>
+                <div class="font-bold text-xl mb-2" id="movieTitle">THE STING <span id="releaseDate"> (2020-09-18) </span> </div>
+                <!-- <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p> -->
+                <p class="text-gray-700 text-base" id="movieSynopsis">  
+                    Just when his time under house arrest is about to end, Scott Lang once again puts his freedom at risk to help Hope van Dyne and Dr. Hank Pym dive into the quantum realm and try to accomplish, against time and any chance of success, a very dangerous rescue mission.
                 </p>
             </div>
             </div>
@@ -60,54 +64,42 @@
             <div class="max-w-sm rounded-lg border border-red-200 overflow-hidden hover:border-red-200 hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
                 <img class="w-full" id="movieImage" src="https://image.tmdb.org/t/p/w500//eivQmS3wqzqnQWILHLc4FsEfcXP.jpg" alt="Ant and the wasp">
                 <div class="px-4 py-4">
-                <div class="font-bold text-xl mb-2" id="movieTitle">ANT AND THE WASP</div> 
-                <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p>
-                <p class="font-bold text-gray-700 text-base"> Synopsis : 
-                    <br>
-                    <span id="movieSynopsis" class="font-light text-gray-700 text-base">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
-                    </span>
-                </p>
+                    <div class="font-bold text-xl mb-2" id="movieTitle"> WASP AND THE ANTMAN <span id="releaseDate"> (2020-09-18) </span> </div>
+                    <!-- <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p> -->
+                    <p class="text-gray-700 text-base" id="movieSynopsis">  
+                        The Sting is a live album and DVD by the band W.A.S.P. Originally released as a DVD/CD set, it is also available as a CD on its own.  The concert was originally recorded and shown as a live webcast, which happened during the bands Helldorado World Tour. The DVD of the show (and the webcast) is the first live footage of the band to feature Blackies signature microphone stand, dubbed 'Elvis' by band and fans alike. This album according to band members is known as \"The Sting\"
+                    </p>
                 </div>
             </div>
 
         <div class="max-w-sm rounded-lg border border-red-200 overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
             <img class="w-full" id="movieImage"  src="https://image.tmdb.org/t/p/w500/iEpdQ5HeMfsETlSXqZJ6cCIEAtZ.jpg" alt="Mountain">
             <div class="px-4 py-4">
-            <div class="font-bold text-xl mb-2 " id="movieTitle">PORT ARTHUR MASSACRE</div>
-            <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p>
-            <p class="font-bold text-gray-700 text-base"> Synopsis : 
-                <br>
-                <span id="movieSynopsis" class="font-light text-gray-700 text-base">
+                <div class="font-bold text-xl mb-2" id="movieTitle"> PORT ARTHUR MASSACRE  <span id="releaseDate"> (2020-09-18) </span> </div>
+                <!-- <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p> -->
+                <p class="text-gray-700 text-base" id="movieSynopsis">  
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
-                </span>
-            </p>
+                </p>
             </div>
         </div>
         <div class="max-w-sm rounded-lg border border-red-200 overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
             <img class="w-full" id="movieImage" src="https://image.tmdb.org/t/p/w500/iEpdQ5HeMfsETlSXqZJ6cCIEAtZ.jpg" alt="Mountain">
             <div class="px-4 py-4">
-            <div class="font-bold text-xl mb-2" id="movieTitle">PORT ARTHUR MASSACRE</div>
-            <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p>
-            <p class="font-bold text-gray-700 text-base"> Synopsis : 
-                <br>
-                <span id="movieSynopsis" class="font-light text-gray-700 text-base">
+                <div class="font-bold text-xl mb-2" id="movieTitle"> PORT ARTHUR MASSACRE  <span id="releaseDate"> (2020-09-18) </span> </div>
+                <!-- <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p> -->
+                <p class="text-gray-700 text-base" id="movieSynopsis">  
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
-                </span>
-            </p>
+                </p>
             </div>
         </div>
         <div class="max-w-sm rounded-lg border border-red-200 overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
             <img class="w-full" id="movieImage" src="https://image.tmdb.org/t/p/w500/iEpdQ5HeMfsETlSXqZJ6cCIEAtZ.jpg" alt="Mountain">
             <div class="px-4 py-4">
-            <div class="font-bold text-xl mb-2" id="movieTitle">PORT ARTHUR MASSACRE</div>
-            <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p>
-            <p class="font-bold text-gray-700 text-base"> Synopsis : 
-                <br>
-                <span id="movieSynopsis" class="font-light text-gray-700 text-base">
+                <div class="font-bold text-xl mb-2" id="movieTitle"> PORT ARTHUR MASSACRE  <span id="releaseDate"> (2020-09-18) </span> </div>
+                <!-- <p class="font-bold text-gray-700 text-base"> Release Date : <span class="font-light text-gray-700 text-base" id="releaseDate">2020-09-18</span></p> -->
+                <p class="text-gray-700 text-base" id="movieSynopsis">  
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
-                </span>
-            </p>
+                </p>
             </div>
       </div>
     </div>
