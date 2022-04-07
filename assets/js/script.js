@@ -6,13 +6,14 @@ var message = ts+privKey+pubKey;
 var hashKey = CryptoJS.MD5(message);
 var characterBaseUrl = "http://gateway.marvel.com/v1/public/characters?"
 
-// global variables
-// import { characterList } from "./characters";
-
 // content elements
-var charContainerEl = document.getElementById("characterCard"); // TODO
-var charThumbnail = document.getElementById("characterThumbNail"); // TODO
-var movieContainerEl = document.getElementById("moviesContainer"); // TODO
+var charContainerEl = document.getElementById("characterCard");
+var charThumbnail = document.getElementById("charImage");
+var charName = document.getElementById("charName");
+var charDescription = document.getElementById("charDescription");
+var charComics = document.getElementById("charComics");
+
+var movieContainerEl = document.getElementById("moviesContainer");
 
 // form elements
 var inputEl = document.getElementById("searchCharName");
@@ -21,52 +22,20 @@ var buttonEl = document.getElementById("submitBtn");
 // event listeners
 buttonEl.addEventListener("click", searchId);
 
-// var requestCharacterUrl = []; 
-// for (let i = 0; i < 16; i++) {
-//     var offset = i*100;
-//     var url = characterBaseUrl + "ts=" + ts + "&apikey=" + pubKey + "&hash=" + hashKey + "&limit=100" + "&offset=" + offset;
-//     requestCharacterUrl.push(url);
-// }
+// initialize page
+init();
 
-// async function getCharacters() {
-//     var characterList = [];
-//     for (let i = 0; i < requestCharacterUrl.length; i++)   {
-//         console.log('fetching', requestCharacterUrl[i]);
-//         try {
-//             var request = await fetch(requestCharacterUrl[i]);
-//             var response = await request.json();
-//             // console.log(response);
-//             for(let j = 0; j < response.data.results.length; j++) {
-//                 var description = response.data.results[j].description;
-//                 // console.log(description);
-//                 if (description) {
-//                     var characterName = response.data.results[j].name;
-//                     var characterSearchString = characterName.replace(/[&#,+()$~%'":*?<>{}]/g, '');
-//                     characterSearchString = characterSearchString.replace(/[-\/\\]/g, ' ');
-//                     characterSearchString = characterSearchString.split(' ').slice(0, 2).join(' ');
-//                     var characterId = response.data.results[j].id;
-//                     var characterObj = {
-//                         name: characterName,
-//                         searchString: characterSearchString,
-//                         id: characterId
-//                     };
-//                     characterList.push(characterObj);
-//                 }
-//             }
-//         }
-//         catch (e) {
-//             console.error(e.message);
-//         }
-//     }
-//     console.log(JSON.stringify(characterList));
-// };
-
-// console.log(characterList);
+// functions
+function init() {
+    getLast5FromLocalStorage();
+    appendLast5();
+}
 
 // main search function
 function searchId(event) {
     event.preventDefault();
     var charName = inputEl.value;
+
     var charId;
     for (i = 0; i < characterList.length; i++) {
         if (characterList[i].searchString == charName) {
@@ -75,7 +44,7 @@ function searchId(event) {
         }
     }
     if (!charId) {
-        console.log("Character not found"); //temp
+        charName.textContent = "Character Not Found";
         return;
     }
 
@@ -91,35 +60,23 @@ function searchCharacter(id) {
         return response.json();
     })
     .then(function (d) {
-        console.log(d);
-        var charInfo = {
+        var characterObj = {
             name: d.data.results[0].name,
-            id: d.data.results[0].id, // delete?
             description: d.data.results[0].description,
             thumbnail: d.data.results[0].thumbnail.path + "." + d.data.results[0].thumbnail.extension,
-            comics: d.data.results[0].urls[0].url
+            comics: d.data.results[0].urls[2].url  //TODO multiple links, URLs are wonky
         };
 
-        // TODO append info
-        var newImg = document.createElement("img");
-        newImg.setAttribute("src", charInfo.thumbnail);
-        newImg.setAttribute("alt", charInfo.name);
-        charThumbnail.append(newImg);
+        addToLocalStorage(characterObj)
 
-        var newH2 = document.createElement("h2");
-        newH2.textContent = charInfo.name;
-        var newP = document.createElement("p");
-        newP.textContent = charInfo.description;
-        var newA = document.createElement("a");
-        newA.textContent = "See Comics";
-        newA.setAttribute("href", charInfo.comics);
+        charThumbnail.setAttribute("src", characterObj.thumbnail);
+        charThumbnail.setAttribute("alt", characterObj.name);
 
-        charContainerEl.append(newH2, newP, newA);
+        charName.textContent = characterObj.name;
+        charDescription.textContent = characterObj.description;
+        charComics.setAttribute("href", characterObj.comics);
     });
 }
-
-//searchCharacter(1009577)
-//currentloginid().then(value => console.log(value));
 
 function searchMovie(query) {
     var requestByQuery = "https://api.themoviedb.org/3/search/movie?api_key=c2d17b4b68756938636de8ad845e6940&query=" + query + "&page=1"
@@ -128,24 +85,15 @@ function searchMovie(query) {
         return response.json();
     })
     .then(function (data) {
-        if(!data) {
+        if(data.results.length === 0) {
+            movieContainerEl.textContent = "No Movies Found"; // TODO formatting?
             return;
         }
 
-        var top5Movies = [];
         movieContainerEl.textContent = "";
 
         for (i = 0; i < 5; i++) {
-
-            var movie = {
-                title: data.results[i].title,
-                year: data.results[i].release_date.slice(0, 4),
-                overview: data.results[i].overview,
-                posterPath: "https://image.tmdb.org/t/p/w500" + data.results[i].poster_path
-            };
             
-            top5Movies.push(movie);
-
             var movieDiv = document.createElement("div");
             movieDiv.className = "max-w-sm rounded-lg overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl";
 
@@ -170,45 +118,16 @@ function searchMovie(query) {
             movieDiv.append(movieImg, infoDiv);
             movieContainerEl.append(movieDiv);
         }
-        
-        // TODO append info
-        //console.log(top5Movies);
-
-        // create elements with attributes and class names
-
-    
-
     });
-
-    // <div class="max-w-sm rounded-lg overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
-    //         <img class="w-full" src="https://image.tmdb.org/t/p/w500/ya7KoVn8lHh9TagGmDgDTnUb7mi.jpg" alt="Mountain">
-    //         <div class="px-4 py-4">
-    //             <div class="font-bold text-xl mb-2">Mountain</div>
-    //             <p class="text-gray-700 text-base"> Release Date : <span id="releaseDate"></span></p>
-    //             <p class="text-gray-700 text-base">
-    //             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
-    //             </p>
-    //         </div>
-    //         </div>
-
-
 }
 
-// searchMovie("Spiderman");
-searchMovie("Iron Man")
-
 // sets character object to local storage
-function addToLocalStorage() {
+function addToLocalStorage(characterObj) {
     var searchedCharacters = JSON.parse(localStorage.getItem("searched_characters"));
     if (searchedCharacters == null) {
         searchedCharacters = []
     };
-    var characterObj = {
-        "name":  characterName,
-        "id": characterId,
-        "search_string": searchString,
-        "thumbnail_url": characterThumbnailUrl, 
-    };
+    // TODO duplicate searches
     localStorage.setItem("character", JSON.stringify(characterObj));
     searchedCharacters.push(characterObj);
     localStorage.setItem("searched_characters", JSON.stringify(searchedCharacters));
@@ -231,4 +150,8 @@ function getLast5FromLocalStorage() {
         }
     }
     return characterOrderDesc;
+}
+
+function appendLast5() {
+    // TODO
 }
