@@ -6,6 +6,21 @@ var message = ts+privKey+pubKey;
 var hashKey = CryptoJS.MD5(message);
 var characterBaseUrl = "http://gateway.marvel.com/v1/public/characters?"
 
+// global variables
+// import { characterList } from "./characters";
+
+// content elements
+var charContainerEl = document.getElementById("characterCard"); // TODO
+var charThumbnail = document.getElementById("characterThumbNail"); // TODO
+var movieContainerEl = document.getElementById("moviesContainer"); // TODO
+
+// form elements
+var inputEl = document.getElementById("searchCharName");
+var buttonEl = document.getElementById("submitBtn");
+
+// event listeners
+buttonEl.addEventListener("click", searchId);
+
 // var requestCharacterUrl = []; 
 // for (let i = 0; i < 16; i++) {
 //     var offset = i*100;
@@ -48,6 +63,27 @@ var characterBaseUrl = "http://gateway.marvel.com/v1/public/characters?"
 
 // console.log(characterList);
 
+// main search function
+function searchId(event) {
+    event.preventDefault();
+    var charName = inputEl.value;
+    var charId;
+    for (i = 0; i < characterList.length; i++) {
+        if (characterList[i].searchString == charName) {
+            charId = characterList[i].id;
+            i = characterList.length;
+        }
+    }
+    if (!charId) {
+        console.log("Character not found"); //temp
+        return;
+    }
+
+    searchCharacter(charId);
+    searchMovie(charName);
+}
+
+
 function searchCharacter(id) {
     var requestById = "http://gateway.marvel.com/v1/public/characters/" + id + "?ts=" + ts + "&apikey=" + pubKey + "&hash=" + hashKey;
     fetch(requestById)
@@ -55,7 +91,8 @@ function searchCharacter(id) {
         return response.json();
     })
     .then(function (d) {
-        var characterInfo = {
+        console.log(d);
+        var charInfo = {
             name: d.data.results[0].name,
             id: d.data.results[0].id, // delete?
             description: d.data.results[0].description,
@@ -64,6 +101,20 @@ function searchCharacter(id) {
         };
 
         // TODO append info
+        var newImg = document.createElement("img");
+        newImg.setAttribute("src", charInfo.thumbnail);
+        newImg.setAttribute("alt", charInfo.name);
+        charThumbnail.append(newImg);
+
+        var newH2 = document.createElement("h2");
+        newH2.textContent = charInfo.name;
+        var newP = document.createElement("p");
+        newP.textContent = charInfo.description;
+        var newA = document.createElement("a");
+        newA.textContent = "See Comics";
+        newA.setAttribute("href", charInfo.comics);
+
+        charContainerEl.append(newH2, newP, newA);
     });
 }
 
@@ -77,23 +128,68 @@ function searchMovie(query) {
         return response.json();
     })
     .then(function (data) {
+        if(!data) {
+            return;
+        }
+
         var top5Movies = [];
+        movieContainerEl.textContent = "";
 
         for (i = 0; i < 5; i++) {
 
-        var movie = {
-            title: data.results[i].title,
-            year: data.results[i].release_date.slice(0, 4),
-            overview: data.results[i].overview,
-            posterPath: "https://image.tmdb.org/t/p/w500" + data.results[i].poster_path
-        };
+            // var movie = {
+            //     title: data.results[i].title,
+            //     year: data.results[i].release_date.slice(0, 4),
+            //     overview: data.results[i].overview,
+            //     posterPath: "https://image.tmdb.org/t/p/w500" + data.results[i].poster_path
+            // };
 
-        top5Movies.push(movie)
+            var movieDiv = document.createElement("div");
+            movieDiv.className = "max-w-sm rounded-lg overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl";
+
+            var movieImg = document.createElement("img");
+            movieImg.className = "w-full";
+            movieImg.setAttribute("src", "https://image.tmdb.org/t/p/w500" + data.results[i].poster_path);
+            movieImg.setAttribute("alt", data.results[i].title + " poster");
+
+            var infoDiv = document.createElement("div");
+            infoDiv.className = "px-4 py-4";
+
+            var movieTitle = document.createElement("div");
+            movieTitle.className = "font-bold text-xl mb-2";
+            movieTitle.textContent = data.results[i].title + " (" + data.results[i].release_date.slice(0, 4) + ")";   
+            
+            var movieOverview = document.createElement("p");
+            movieOverview.className = "text-gray-700 text-base";
+            movieOverview.textContent = data.results[i].overview;
+
+            // append elements
+            infoDiv.append(movieTitle, movieOverview);
+            movieDiv.append(movieImg, infoDiv);
+            movieContainerEl.append(movieDiv);
         }
-        // TODO append info
         
-        console.log(top5Movies);
+        // TODO append info
+        //console.log(top5Movies);
+
+        // create elements with attributes and class names
+
+    
+
     });
+
+    // <div class="max-w-sm rounded-lg overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl">
+    //         <img class="w-full" src="https://image.tmdb.org/t/p/w500/ya7KoVn8lHh9TagGmDgDTnUb7mi.jpg" alt="Mountain">
+    //         <div class="px-4 py-4">
+    //             <div class="font-bold text-xl mb-2">Mountain</div>
+    //             <p class="text-gray-700 text-base"> Release Date : <span id="releaseDate"></span></p>
+    //             <p class="text-gray-700 text-base">
+    //             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, Nonea! Maiores et perferendis eaque, exercitationem praesentium nihil.
+    //             </p>
+    //         </div>
+    //         </div>
+
+
 }
 
-searchMovie("Spiderman");
+// searchMovie("Spiderman");
