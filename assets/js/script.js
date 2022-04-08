@@ -25,6 +25,10 @@ var buttonEl = document.getElementById("submitBtn");
 
 // event listeners
 buttonEl.addEventListener("click", handleSearch);
+
+if (window.location.href.includes("index.html")){
+    recentSearchContainerEl.addEventListener("click",handleSearch);
+}
 // TODO history event listeners
 
 // initialize page
@@ -41,7 +45,13 @@ function init() {
 
 function handleSearch(event) {
     event.preventDefault();
-    localStorage.setItem("search-character-name", inputEl.value);
+    console.log(event);
+    if (event.target.id == 'charImg') {
+        localStorage.setItem("search-character-name", event.target.alt);
+    }
+    else {
+        localStorage.setItem("search-character-name", inputEl.value);
+    }
     if (window.location.href.includes("index.html")) {
         window.location.href = "./searchresults.html";
     } else {
@@ -174,13 +184,14 @@ function populateRecentSearches() {
         return;
     } 
     if (storedCharacters.length > 0) {
-        for (let i = storedCharacters.length - 1; i < storedCharacters.length; i--) {
+        for (let i = storedCharacters.length - 1; i >= 0; i--) {
             var imgDiv = document.createElement('div');
             imgDiv.setAttribute ('class', "max-w-sm rounded-full h-20 w-20 border border-red-200 overflow-hidden hover:border-red-200 hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl");
             var charImg = document.createElement('img');
             charImg.setAttribute('class',"w-full");
             charImg.setAttribute ('src', storedCharacters[i].thumbnail);
             charImg.setAttribute('alt', storedCharacters[i].name);
+            charImg.setAttribute('id', "charImg")
 
             imgDiv.appendChild(charImg);
             recentSearchContainerEl.appendChild(imgDiv);
