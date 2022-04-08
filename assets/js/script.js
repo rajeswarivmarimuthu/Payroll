@@ -15,7 +15,6 @@ var charThumbnail = document.getElementById("charImage");
 var charName = document.getElementById("charName");
 var charDescription = document.getElementById("charDescription");
 var charComics = document.getElementById("charComics");
-var recentSearchContainerEl = document.getElementById('recentSearchContainer');
 
 var movieContainerEl = document.getElementById("moviesContainer");
 
@@ -24,15 +23,20 @@ var inputEl = document.getElementById("searchCharName");
 var buttonEl = document.getElementById("submitBtn");
 
 // event listeners
-buttonEl.addEventListener("click", searchId);
-recentSearchContainerEl.addEventListener("click",searchId);
+buttonEl.addEventListener("click", handleSearch);
+// TODO history event listeners
 
 // initialize page
 init();
 
 // functions
 function init() {
-    populateRecentSearches();
+    if (window.location.href.includes("index.html")) {
+        getLast5FromLocalStorage();
+        appendLast5();
+    } else {
+        searchId();
+    }
 }
 
 function handleSearch(event) {
@@ -73,11 +77,6 @@ function searchCharacter(id) {
         return response.json();
     })
     .then(function (d) {
-
-        if (typeof(d.data.results[0].urls[2].url) == 'undefined' ) {
-            d.data.results[0].urls[2].url = ' '
-        };
-
         var characterObj = {
             name: d.data.results[0].name,
             description: d.data.results[0].description,
@@ -86,7 +85,6 @@ function searchCharacter(id) {
         };
 
         addToLocalStorage(characterObj)
-
 
         charThumbnail.setAttribute("src", characterObj.thumbnail);
         charThumbnail.setAttribute("alt", characterObj.name);
@@ -142,51 +140,35 @@ function searchMovie(query) {
 
 // sets character object to local storage
 function addToLocalStorage(characterObj) {
-    var searchedCharacters = [];
-    searchedCharacters = JSON.parse(localStorage.getItem("searched_characters"));
-    var charInLs;
-    
-    if (!searchedCharacters) {
+    var searchedCharacters = JSON.parse(localStorage.getItem("searched_characters"));
+    if (searchedCharacters == null) {
         searchedCharacters = []
-    }
-    
-    // Checking for duplicates and if present skip storing in localStorage!! 
-    charInLs = searchedCharacters.findIndex(e => e.name == characterObj.name)
-    console.log(searchedCharacters, characterObj.name, charInLs);
-    if (charInLs >=0) {
-        return;
-    }
-    searchedCharacters.push(characterObj);
+    };
+    // TODO duplicate searches
     localStorage.setItem("character", JSON.stringify(characterObj));
-
-    // Storing only 5 Marvel characters in localStorage
-    if (searchedCharacters.length === 6) {
-         searchedCharacters.shift();
-    }
-    
+    searchedCharacters.push(characterObj);
     localStorage.setItem("searched_characters", JSON.stringify(searchedCharacters));
-    
 };
 
-// Populate recent searches from local storage
-function populateRecentSearches() {
+// gets last 5 character objects from local storage
+function getLast5FromLocalStorage() {
     var storedCharacters = JSON.parse(localStorage.getItem("searched_characters"));
-    recentSearchContainerEl.innerHTML ='';
     if (storedCharacters == null) {
         storedCharacters = [];
-        return;
-    } 
+    } else if (storedCharacters.length > 5) {
+        storedCharacters = storedCharacters.slice(-5);
+    };
     if (storedCharacters.length > 0) {
-        for (let i = storedCharacters.length - 1; i < storedCharacters.length; i--) {
-            var imgDiv = document.createElement('div');
-            imgDiv.setAttribute ('class', "max-w-sm rounded-full h-20 w-20 border border-red-200 overflow-hidden hover:border-red-200 hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl");
-            var charImg = document.createElement('img');
-            charImg.setAttribute('class',"w-full");
-            charImg.setAttribute ('src', storedCharacters[i].thumbnail);
-            charImg.setAttribute('alt', storedCharacters[i].name);
-
-            imgDiv.appendChild(charImg);
-            recentSearchContainerEl.appendChild(imgDiv);
+        var j = 0;
+        var characterOrderDesc = [];
+        for (let i = storedCharacters.length - 1; j < storedCharacters.length & j < 5; i--) {
+            characterOrderDesc.push(storedCharacters[i]);
+            j++;
         }
     }
+    return characterOrderDesc;
+}
+
+function appendLast5() {
+    // TODO
 }

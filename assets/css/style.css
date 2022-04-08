@@ -1,9 +1,7 @@
-body{
-    font-family: 'Open Sans', sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-}
+@tailwind preflight;
+@tailwind utilities;
 
-main h1 {
-  font-size: 32px;
+body {
+    line-height: 1.5;
+    box-sizing: border-box;
 }
