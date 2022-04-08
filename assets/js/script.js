@@ -6,6 +6,9 @@ var message = ts+privKey+pubKey;
 var hashKey = CryptoJS.MD5(message);
 var characterBaseUrl = "http://gateway.marvel.com/v1/public/characters?"
 
+// global variables
+var searchCharName;
+
 // content elements
 var charContainerEl = document.getElementById("characterCard");
 var charThumbnail = document.getElementById("charImage");
@@ -32,12 +35,21 @@ function init() {
     populateRecentSearches();
 }
 
-// main search function
-function searchId(event) {
+function handleSearch(event) {
     event.preventDefault();
-    var charName = inputEl.value;
+    localStorage.setItem("search-character-name", inputEl.value);
+    if (window.location.href.includes("index.html")) {
+        window.location.href = "./searchresults.html";
+    } else {
+        searchId();
+    }
+}
 
+// main search function
+function searchId() {
+    var charName = localStorage.getItem("search-character-name");
     var charId;
+
     for (i = 0; i < characterList.length; i++) {
         if (characterList[i].searchString == charName) {
             charId = characterList[i].id;
@@ -70,7 +82,7 @@ function searchCharacter(id) {
             name: d.data.results[0].name,
             description: d.data.results[0].description,
             thumbnail: d.data.results[0].thumbnail.path + "." + d.data.results[0].thumbnail.extension,
-            comics: d.data.results[0].urls[2].url  //TODO multiple links, URLs are wonky
+            comics: d.data.results[0].urls[d.data.results[0].urls.length - 1].url
         };
 
         addToLocalStorage(characterObj)
