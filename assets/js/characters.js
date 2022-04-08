@@ -1,3 +1,5 @@
+// This code was used to request data from the Marvel API and handle any missing data, replace special characters in strings, and compact it into an array of character objects. We stored the filtered data into a variable to avoid long runtimes.
+
 // var requestCharacterUrl = []; 
 // for (let i = 0; i < 16; i++) {
 //     var offset = i*100;
