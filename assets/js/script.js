@@ -91,13 +91,13 @@ function searchCharacter(id) {
         };
 
         addToLocalStorage(characterObj)
-
-        charThumbnail.setAttribute("src", characterObj.thumbnail);
-        charThumbnail.setAttribute("alt", characterObj.name);
-
-        charName.textContent = characterObj.name;
-        charDescription.textContent = characterObj.description;
-        charComics.setAttribute("href", characterObj.comics);
+        if (window.location.href.includes("searchresults.html")){
+            charThumbnail.setAttribute("src", characterObj.thumbnail);
+            charThumbnail.setAttribute("alt", characterObj.name);
+            charName.textContent = characterObj.name;
+            charDescription.textContent = characterObj.description;
+            charComics.setAttribute("href", characterObj.comics);
+        }
     });
 }
 
@@ -113,7 +113,9 @@ function searchMovie(query) {
             return;
         }
 
-        movieContainerEl.textContent = "";
+        if (window.location.href.includes("searchresults.html")){
+            movieContainerEl.textContent = "";
+        }
 
         for (i = 0; i < 5; i++) {
             
