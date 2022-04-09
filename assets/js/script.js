@@ -93,8 +93,10 @@ function handleSearch(event) {
         localStorage.setItem("search-character-name", inputEl.value);
     }
 
+    console.log('recentSearchContainerEl', recentSearchContainerEl)
     if (recentSearchContainerEl) {
-        window.location.href = "./searchresults.html";
+        console.log('checking redirect', recentSearchContainerEl)
+        window.location.replace("./searchresults.html");
     } else {
         searchId();
     }
