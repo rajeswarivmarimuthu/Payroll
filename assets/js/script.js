@@ -27,9 +27,11 @@ var autocompleteEl = document.getElementById("result");
 // event listeners
 buttonEl.addEventListener("click", handleSearch);
 
-if (window.location.href.includes("index.html")){
-    recentSearchContainerEl.addEventListener("click", handleSearch);
-
+//if (window.location.href.includes("index.html")){
+    if (recentSearchContainerEl) {
+    recentSearchContainerEl.addEventListener("click", handleSearch);    
+    }
+    if (autocompleteEl){
     autocompleteEl.addEventListener("click", function(event){
         event.preventDefault();
         var test_target = event.target.textContent;
@@ -37,7 +39,8 @@ if (window.location.href.includes("index.html")){
         inputEl.value = test_target;
         document.getElementById("result").style.display = "none";
     });
-}
+    }
+//}
 
 // test autocomplete
 var search_terms = [];
