@@ -151,35 +151,35 @@ function searchMovie(query) {
         }
 
         if (window.location.href.includes("searchresults.html")){
-            movieContainerEl.textContent = "";
-        }
-
-        for (i = 0; i < 5; i++) {
+            movieContainerEl.textContent = ""
             
-            var movieDiv = document.createElement("div");
-            movieDiv.className = "max-w-sm rounded-lg overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl";
+            for (i = 0; i < 5; i++) {
+                
+                var movieDiv = document.createElement("div");
+                movieDiv.className = "max-w-sm rounded-lg overflow-hidden hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl";
 
-            var movieImg = document.createElement("img");
-            movieImg.className = "w-full";
-            movieImg.setAttribute("src", "https://image.tmdb.org/t/p/w500" + data.results[i].poster_path);
-            movieImg.setAttribute("alt", data.results[i].title + " poster");
+                var movieImg = document.createElement("img");
+                movieImg.className = "w-full";
+                movieImg.setAttribute("src", "https://image.tmdb.org/t/p/w500" + data.results[i].poster_path);
+                movieImg.setAttribute("alt", data.results[i].title + " poster");
 
-            var infoDiv = document.createElement("div");
-            infoDiv.className = "px-4 py-4";
+                var infoDiv = document.createElement("div");
+                infoDiv.className = "px-4 py-4";
 
-            var movieTitle = document.createElement("div");
-            movieTitle.className = "font-bold text-xl mb-2";
-            movieTitle.textContent = data.results[i].title + " (" + data.results[i].release_date.slice(0, 4) + ")";   
-            
-            var movieOverview = document.createElement("p");
-            movieOverview.className = "text-gray-700 text-base";
-            movieOverview.textContent = data.results[i].overview;
+                var movieTitle = document.createElement("div");
+                movieTitle.className = "font-bold text-xl mb-2";
+                movieTitle.textContent = data.results[i].title + " (" + data.results[i].release_date.slice(0, 4) + ")";   
+                
+                var movieOverview = document.createElement("p");
+                movieOverview.className = "text-gray-700 text-base";
+                movieOverview.textContent = data.results[i].overview;
 
-            // append elements
-            infoDiv.append(movieTitle, movieOverview);
-            movieDiv.append(movieImg, infoDiv);
-            movieContainerEl.append(movieDiv);
+                // append elements
+                infoDiv.append(movieTitle, movieOverview);
+                movieDiv.append(movieImg, infoDiv);
+                movieContainerEl.append(movieDiv);
         }
+      }   
     });
 }
 
