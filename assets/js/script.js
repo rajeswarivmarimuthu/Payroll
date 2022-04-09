@@ -101,6 +101,11 @@ function handleSearch(event) {
 function searchId() {
     var charId;
     var charName = localStorage.getItem("search-character-name");
+
+    if (!charName) {
+        return;
+    }
+    
     var charToBeMatched = charName.toLowerCase();
     charId = characterList.findIndex(e => e.name.toLowerCase() == charToBeMatched);
        
