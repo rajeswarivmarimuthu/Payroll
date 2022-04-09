@@ -29,7 +29,9 @@ buttonEl.addEventListener("click", handleSearch);
 
 if (window.location.href.includes("index.html")){
     recentSearchContainerEl.addEventListener("click", handleSearch);
+
     autocompleteEl.addEventListener("click", function(event){
+        event.preventDefault();
         var test_target = event.target.textContent;
         console.log(test_target); 
         inputEl.value = test_target;
@@ -105,7 +107,7 @@ function searchId() {
     if (!charName) {
         return;
     }
-    
+
     var charToBeMatched = charName.toLowerCase();
     charId = characterList.findIndex(e => e.name.toLowerCase() == charToBeMatched);
        
