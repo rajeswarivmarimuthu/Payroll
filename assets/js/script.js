@@ -31,44 +31,43 @@ buttonEl.addEventListener("click", handleSearch);
     recentSearchContainerEl.addEventListener("click", handleSearch);    
     }
     if (autocompleteEl){
-    autocompleteEl.addEventListener("click", function(event){
+    autocompleteEl.addEventListener("click", function(event) {
         event.preventDefault();
-        var test_target = event.target.textContent;
-        console.log(test_target); 
-        inputEl.value = test_target;
+        var charTarget = event.target.textContent;
+        inputEl.value = charTarget;
         document.getElementById("result").style.display = "none";
     });
     }
 
-// test autocomplete
 var search_terms = [];
 for (let i = 0; i < characterList.length; i++) {
     search_terms.push(characterList[i].name);
 }
-console.log(search_terms)
- 
+
 function autocompleteMatch(input) {
   if (input == '') {
     return [];
   }
-  var reg = new RegExp(input)
+  var reg = new RegExp(input, "i")
   return search_terms.filter(function(term) {
 	  if (term.match(reg)) {
   	  return term;
 	  }
   });
 }
- //terms.length
+
 function showResults(val) {
-  res = document.getElementById("result");
-  res.innerHTML = '';
-  let list = '';
-  let terms = autocompleteMatch(val);
-  let terms10 = terms.slice(0,10)
-  for (i=0; i<terms10.length; i++) {
-    list += '<li>' + terms[i] + '</li>';
-  }
-  res.innerHTML = '<ul>' + list + '</ul>';
+    document.getElementById("result").style.display = "block";  
+    res = document.getElementById("result");
+    res.innerHTML = '';
+
+    let list = '';
+    let terms = autocompleteMatch(val);
+    let terms10 = terms.slice(0,10)
+    for (i=0; i<terms10.length; i++) {
+        list += '<li>' + terms[i] + '</li>';
+    }
+    res.innerHTML = '<ul>' + list + '</ul>';
 }
 
 // initialize page
@@ -84,7 +83,7 @@ function init() {
 }
 
 function handleSearch(event) {
-    // event.preventDefault();
+    event.preventDefault();
     console.log(event);
     if (event.target.id == 'charImg') {
         localStorage.setItem("search-character-name", event.target.alt);
