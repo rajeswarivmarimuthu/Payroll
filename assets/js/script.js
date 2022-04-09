@@ -29,7 +29,7 @@ buttonEl.addEventListener("click", handleSearch);
 if (window.location.href.includes("index.html")){
     recentSearchContainerEl.addEventListener("click",handleSearch);
 }
-// TODO history event listeners
+
 
 // initialize page
 init();
@@ -64,18 +64,14 @@ function searchId() {
     var charName = localStorage.getItem("search-character-name");
     var charId;
 
-    for (i = 0; i < characterList.length; i++) {
-        if (characterList[i].searchString == charName) {
-            charId = characterList[i].id;
-            i = characterList.length;
-        }
-    }
-    if (!charId) {
+    var charToBeMatched = charName.toLowerCase();
+    charId = characterList.findIndex(e => e.searchString.toLowerCase() == charToBeMatched);
+
+    if (charId < 0) {
         charName.textContent = "Character Not Found";
         return;
     }
-
-    searchCharacter(charId);
+    searchCharacter(characterList[charId].id);
     searchMovie(charName);
 }
 
