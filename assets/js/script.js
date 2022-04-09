@@ -22,14 +22,51 @@ var movieContainerEl = document.getElementById("moviesContainer");
 // form elements
 var inputEl = document.getElementById("searchCharName");
 var buttonEl = document.getElementById("submitBtn");
+var autocompleteEl = document.getElementById("result");
 
 // event listeners
 buttonEl.addEventListener("click", handleSearch);
 
 if (window.location.href.includes("index.html")){
-    recentSearchContainerEl.addEventListener("click",handleSearch);
+    recentSearchContainerEl.addEventListener("click", handleSearch);
+    autocompleteEl.addEventListener("click", function(event){
+        var test_target = event.target.textContent;
+        console.log(test_target); 
+        inputEl.value = test_target;
+        document.getElementById("result").style.display = "none";
+    });
 }
 
+// test autocomplete
+var search_terms = [];
+for (let i = 0; i < characterList.length; i++) {
+    search_terms.push(characterList[i].name);
+}
+console.log(search_terms)
+ 
+function autocompleteMatch(input) {
+  if (input == '') {
+    return [];
+  }
+  var reg = new RegExp(input)
+  return search_terms.filter(function(term) {
+	  if (term.match(reg)) {
+  	  return term;
+	  }
+  });
+}
+ //terms.length
+function showResults(val) {
+  res = document.getElementById("result");
+  res.innerHTML = '';
+  let list = '';
+  let terms = autocompleteMatch(val);
+  let terms10 = terms.slice(0,10)
+  for (i=0; i<terms10.length; i++) {
+    list += '<li>' + terms[i] + '</li>';
+  }
+  res.innerHTML = '<ul>' + list + '</ul>';
+}
 
 // initialize page
 init();
@@ -44,7 +81,7 @@ function init() {
 }
 
 function handleSearch(event) {
-    event.preventDefault();
+    // event.preventDefault();
     console.log(event);
     if (event.target.id == 'charImg') {
         localStorage.setItem("search-character-name", event.target.alt);
@@ -52,6 +89,7 @@ function handleSearch(event) {
     else {
         localStorage.setItem("search-character-name", inputEl.value);
     }
+
     if (window.location.href.includes("index.html")) {
         window.location.href = "./searchresults.html";
     } else {
@@ -61,18 +99,17 @@ function handleSearch(event) {
 
 // main search function
 function searchId() {
-    var charName = localStorage.getItem("search-character-name");
     var charId;
-
+    var charName = localStorage.getItem("search-character-name");
     var charToBeMatched = charName.toLowerCase();
-    charId = characterList.findIndex(e => e.searchString.toLowerCase() == charToBeMatched);
-
+    charId = characterList.findIndex(e => e.name.toLowerCase() == charToBeMatched);
+       
     if (charId < 0) {
         charName.textContent = "Character Not Found";
         return;
     }
     searchCharacter(characterList[charId].id);
-    searchMovie(charName);
+    searchMovie(characterList[charId].searchString);
 }
 
 
