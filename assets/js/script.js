@@ -27,7 +27,6 @@ var autocompleteEl = document.getElementById("result");
 // event listeners
 buttonEl.addEventListener("click", handleSearch);
 
-//if (window.location.href.includes("index.html")){
     if (recentSearchContainerEl) {
     recentSearchContainerEl.addEventListener("click", handleSearch);    
     }
@@ -40,7 +39,6 @@ buttonEl.addEventListener("click", handleSearch);
         document.getElementById("result").style.display = "none";
     });
     }
-//}
 
 // test autocomplete
 var search_terms = [];
@@ -78,7 +76,7 @@ init();
 
 // functions
 function init() {
-    if (window.location.href.includes("index.html")) {
+    if (recentSearchContainerEl) {
         populateRecentSearches();
     } else {
         searchId();
@@ -95,7 +93,7 @@ function handleSearch(event) {
         localStorage.setItem("search-character-name", inputEl.value);
     }
 
-    if (window.location.href.includes("index.html")) {
+    if (recentSearchContainerEl) {
         window.location.href = "./searchresults.html";
     } else {
         searchId();
