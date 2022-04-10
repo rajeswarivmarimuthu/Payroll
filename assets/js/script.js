@@ -8,23 +8,68 @@ var characterBaseUrl = "http://gateway.marvel.com/v1/public/characters?"
 
 // global variables
 var searchCharName;
+var charFound = true;
 
 // content elements
-var charContainerEl = document.getElementById("characterCard");
+var charContainerEl = document.getElementById("characterContainer");
+var charCardEl = document.getElementById("characterCard");
 var charThumbnail = document.getElementById("charImage");
 var charName = document.getElementById("charName");
 var charDescription = document.getElementById("charDescription");
 var charComics = document.getElementById("charComics");
+var recentSearchContainerEl = document.getElementById('recentSearchContainer');
 
+var movieSectionEl = document.getElementById("movieSection");
 var movieContainerEl = document.getElementById("moviesContainer");
 
 // form elements
 var inputEl = document.getElementById("searchCharName");
 var buttonEl = document.getElementById("submitBtn");
+var autocompleteEl = document.getElementById("result");
 
 // event listeners
 buttonEl.addEventListener("click", handleSearch);
-// TODO history event listeners
+
+if (window.location.href.includes("index.html")){
+    recentSearchContainerEl.addEventListener("click", handleSearch);
+    autocompleteEl.addEventListener("click", function(event){
+        var test_target = event.target.textContent;
+        console.log(test_target); 
+        inputEl.value = test_target;
+        document.getElementById("result").style.display = "none";
+    });
+}
+
+// test autocomplete
+var search_terms = [];
+for (let i = 0; i < characterList.length; i++) {
+    search_terms.push(characterList[i].name);
+}
+console.log(search_terms)
+ 
+function autocompleteMatch(input) {
+  if (input == '') {
+    return [];
+  }
+  var reg = new RegExp(input)
+  return search_terms.filter(function(term) {
+	  if (term.match(reg)) {
+  	  return term;
+	  }
+  });
+}
+ //terms.length
+function showResults(val) {
+  res = document.getElementById("result");
+  res.innerHTML = '';
+  let list = '';
+  let terms = autocompleteMatch(val);
+  let terms10 = terms.slice(0,10)
+  for (i=0; i<terms10.length; i++) {
+    list += '<li>' + terms[i] + '</li>';
+  }
+  res.innerHTML = '<ul>' + list + '</ul>';
+}
 
 // initialize page
 init();
@@ -32,8 +77,7 @@ init();
 // functions
 function init() {
     if (window.location.href.includes("index.html")) {
-        getLast5FromLocalStorage();
-        appendLast5();
+        populateRecentSearches();
     } else {
         searchId();
     }
@@ -41,7 +85,13 @@ function init() {
 
 function handleSearch(event) {
     event.preventDefault();
-    localStorage.setItem("search-character-name", inputEl.value);
+    if (event.target.id == 'charImg') {
+        localStorage.setItem("search-character-name", event.target.alt);
+    }
+    else {
+        localStorage.setItem("search-character-name", inputEl.value);
+    }
+
     if (window.location.href.includes("index.html")) {
         window.location.href = "./searchresults.html";
     } else {
@@ -52,21 +102,43 @@ function handleSearch(event) {
 // main search function
 function searchId() {
     var charName = localStorage.getItem("search-character-name");
-    var charId;
-
-    for (i = 0; i < characterList.length; i++) {
-        if (characterList[i].searchString == charName) {
-            charId = characterList[i].id;
-            i = characterList.length;
-        }
-    }
-    if (!charId) {
-        charName.textContent = "Character Not Found";
+    var charIndex = characterList.findIndex(e => e.name.toLowerCase() == charName.toLowerCase());
+       
+    if (charIndex < 0) {
+        charFound = false;
+        noCharFound();
         return;
+    } else {
+        if (!charFound) {
+            resultReset();
+        }
+        charFound = true;
     }
+    searchCharacter(characterList[charIndex].id);
+    searchMovie(characterList[charIndex].searchString);
+}
 
-    searchCharacter(charId);
-    searchMovie(charName);
+function resultReset() {
+    charName.style.color = "black";
+    charName.style.backgroundColor = "inherit";
+    charName.style.padding = "unset";
+    charCardEl.style.display = "unset";
+    charContainerEl.classList.add("border", "border-gray-300");
+    movieSectionEl.classList.add("border", "border-gray-300");
+    document.body.style.backgroundImage = "none";
+}
+
+function noCharFound() {
+    charName.textContent = "Sorry, we didn't find what you were looking for";
+    charName.style.color = "white";
+    charName.style.backgroundColor = "rgba(0, 0, 0, 0.5)"
+    charName.style.padding = "2%";
+    charCardEl.style.display = "none";
+    charDescription.textContent = "";
+    charComics.textContent = "";
+    charContainerEl.classList.remove("border", "border-gray-300");
+    movieSectionEl.classList.remove("border", "border-gray-300");
+    document.body.style.backgroundImage = "url('./assets/images/marvel-background.jpg')";
 }
 
 
@@ -86,12 +158,14 @@ function searchCharacter(id) {
 
         addToLocalStorage(characterObj)
 
-        charThumbnail.setAttribute("src", characterObj.thumbnail);
-        charThumbnail.setAttribute("alt", characterObj.name);
-
-        charName.textContent = characterObj.name;
-        charDescription.textContent = characterObj.description;
-        charComics.setAttribute("href", characterObj.comics);
+        if (window.location.href.includes("searchresults.html")){
+            charThumbnail.setAttribute("src", characterObj.thumbnail);
+            charThumbnail.setAttribute("alt", characterObj.name);
+            charName.textContent = characterObj.name;
+            charDescription.textContent = characterObj.description;
+            charComics.textContent = "Comic List";
+            charComics.setAttribute("href", characterObj.comics);
+        }
     });
 }
 
@@ -107,7 +181,9 @@ function searchMovie(query) {
             return;
         }
 
-        movieContainerEl.textContent = "";
+        if (window.location.href.includes("searchresults.html")){
+            movieContainerEl.textContent = "";
+        }
 
         for (i = 0; i < 5; i++) {
             
@@ -139,16 +215,32 @@ function searchMovie(query) {
 }
 
 // sets character object to local storage
+// sets character object to local storage
 function addToLocalStorage(characterObj) {
-    var searchedCharacters = JSON.parse(localStorage.getItem("searched_characters"));
-    if (searchedCharacters == null) {
+    var searchedCharacters = [];
+    searchedCharacters = JSON.parse(localStorage.getItem("searched_characters"));
+    var charInLs;
+    
+    if (!searchedCharacters) {
         searchedCharacters = []
-    };
-    // TODO duplicate searches
-    localStorage.setItem("character", JSON.stringify(characterObj));
+    }
+    
+    // Checking for duplicates and if present skip storing in localStorage!! 
+    charInLs = searchedCharacters.findIndex(e => e.name == characterObj.name)
+    console.log(searchedCharacters, characterObj.name, charInLs);
+    if (charInLs >=0) {
+        return;
+    }
     searchedCharacters.push(characterObj);
+    localStorage.setItem("character", JSON.stringify(characterObj));
+
+    // Storing only 5 Marvel characters in localStorage
+    if (searchedCharacters.length === 6) {
+         searchedCharacters.shift();
+    }
+    
     localStorage.setItem("searched_characters", JSON.stringify(searchedCharacters));
-};
+}
 
 // gets last 5 character objects from local storage
 function getLast5FromLocalStorage() {
@@ -169,6 +261,26 @@ function getLast5FromLocalStorage() {
     return characterOrderDesc;
 }
 
-function appendLast5() {
-    // TODO
+// gets last 5 character objects from local storage
+function populateRecentSearches() {
+    var storedCharacters = JSON.parse(localStorage.getItem("searched_characters"));
+    recentSearchContainerEl.innerHTML ='';
+    if (storedCharacters == null) {
+        storedCharacters = [];
+        return;
+    } 
+    if (storedCharacters.length > 0) {
+        for (let i = storedCharacters.length - 1; i >= 0; i--) {
+            var imgDiv = document.createElement('div');
+            imgDiv.setAttribute ('class', "max-w-sm rounded-full h-20 w-20 border border-red-200 overflow-hidden hover:border-red-200 hover:bg-red-100 transition duration-200 hover:scale-105 shadow-2xl");
+            var charImg = document.createElement('img');
+            charImg.setAttribute('class',"w-full");
+            charImg.setAttribute ('src', storedCharacters[i].thumbnail);
+            charImg.setAttribute('alt', storedCharacters[i].name);
+            charImg.setAttribute('id', "charImg")
+
+            imgDiv.appendChild(charImg);
+            recentSearchContainerEl.appendChild(imgDiv);
+        }
+    }
 }
