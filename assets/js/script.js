@@ -8,15 +8,18 @@ var characterBaseUrl = "https://gateway.marvel.com/v1/public/characters?"
 
 // global variables
 var searchCharName;
+var charFound = true;
 
 // content elements
-var charContainerEl = document.getElementById("characterCard");
+var charContainerEl = document.getElementById("characterContainer");
+var charCardEl = document.getElementById("characterCard");
 var charThumbnail = document.getElementById("charImage");
 var charName = document.getElementById("charName");
 var charDescription = document.getElementById("charDescription");
 var charComics = document.getElementById("charComics");
 var recentSearchContainerEl = document.getElementById('recentSearchContainer');
 
+var movieSectionEl = document.getElementById("movieSection");
 var movieContainerEl = document.getElementById("moviesContainer");
 
 // form elements
@@ -84,7 +87,6 @@ function init() {
 
 function handleSearch(event) {
     event.preventDefault();
-    console.log(event);
     if (event.target.id == 'charImg') {
         localStorage.setItem("search-character-name", event.target.alt);
     }
@@ -103,24 +105,45 @@ function handleSearch(event) {
 
 // main search function
 function searchId() {
-    var charId;
     var charName = localStorage.getItem("search-character-name");
-
-    if (!charName) {
-        return;
-    }
-
-    var charToBeMatched = charName.toLowerCase();
-    charId = characterList.findIndex(e => e.name.toLowerCase() == charToBeMatched);
+    var charIndex = characterList.findIndex(e => e.name.toLowerCase() == charName.toLowerCase());
        
-    if (charId < 0) {
-        charName.textContent = "Character Not Found";
+    if (charIndex < 0) {
+        charFound = false;
+        noCharFound();
         return;
+    } else {
+        if (!charFound) {
+            resultReset();
+        }
+        charFound = true;
     }
-    searchCharacter(characterList[charId].id);
-    searchMovie(characterList[charId].searchString);
+    searchCharacter(characterList[charIndex].id);
+    searchMovie(characterList[charIndex].searchString);
 }
 
+function resultReset() {
+    charName.style.color = "black";
+    charName.style.backgroundColor = "inherit";
+    charName.style.padding = "unset";
+    charCardEl.style.display = "unset";
+    charContainerEl.classList.add("border", "border-gray-300");
+    movieSectionEl.classList.add("border", "border-gray-300");
+    document.body.style.backgroundImage = "none";
+}
+
+function noCharFound() {
+    charName.textContent = "Sorry, we didn't find what you were looking for";
+    charName.style.color = "white";
+    charName.style.backgroundColor = "rgba(0, 0, 0, 0.5)"
+    charName.style.padding = "2%";
+    charCardEl.style.display = "none";
+    charDescription.textContent = "";
+    charComics.textContent = "";
+    charContainerEl.classList.remove("border", "border-gray-300");
+    movieSectionEl.classList.remove("border", "border-gray-300");
+    document.body.style.backgroundImage = "url('./assets/images/marvel-background.jpg')";
+}
 
 function searchCharacter(id) {
     var requestById = "https://gateway.marvel.com/v1/public/characters/" + id + "?ts=" + ts + "&apikey=" + pubKey + "&hash=" + hashKey;
@@ -142,6 +165,7 @@ function searchCharacter(id) {
             charThumbnail.setAttribute("alt", characterObj.name);
             charName.textContent = characterObj.name;
             charDescription.textContent = characterObj.description;
+            charComics.textContent = "Comic List";
             charComics.setAttribute("href", characterObj.comics);
         }
     });
@@ -217,7 +241,7 @@ function addToLocalStorage(characterObj) {
     }
     
     localStorage.setItem("searched_characters", JSON.stringify(searchedCharacters));
-};
+}
 
 // gets last 5 character objects from local storage
 function populateRecentSearches() {
