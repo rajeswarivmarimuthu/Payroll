@@ -18,6 +18,7 @@
         MARVEL WIKI
       </h1>
     </div>
+      <!-- character search form with autocomplete -->
       <form  autocomplete="off" class = 'sm:w-11/12 md:w-8/12 lg:w-6/12 flex justify-center items-center'></form>
         <input onkeyup="showResults(this.value)" name="searchChar" id="searchCharName" autocomplete="off" placeholder = 'Search your favorite Marvel Character...' type="text" autofocus="true" required class="mb-8 m-3 h-19 appearance-none rounded-none sm:w-10/12 md:w-6/12 lg:w-4/12 px-3 py-2  border border-gray-300 placeholder-gray-500 text-gray-900 rounded-full focus:outline-none focus:ring-red-500 focus:border-red-500 focus:z-10 sm:text-sm" />
         <div id="result" class="custom-result"></div>
@@ -31,7 +32,9 @@
       
     </div>
   </main>
+  <!-- marvel authentication script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+  <!-- local scripts -->
   <script src="./assets/js/characters.js"></script>
   <script src="./assets/js/script.js"></script>
 </body>
