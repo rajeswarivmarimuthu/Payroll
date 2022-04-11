@@ -11,12 +11,14 @@ The UI is designed to be responsive to different device display widths and have 
 Source code is provided publicly on GitHub and meets quality coding standards. The application is deployed to GitHub Pages: [Marvel Character Finder]().
 
 ## Tech Stack
-HTML
-TailwindCSS
-Flexbox
-Javascript
-CryptoJS
-The Marvel Comics API
-The Movie Database API
+* HTML
+* TailwindCSS
+* Flexbox
+* Javascript
+* CryptoJS
+* Algoria Autocomplete Function
+* The Marvel Comics API
+* The Movie Database API
 
 ## Demo
+![demo_gif](./assets/images/Marvel Character Finder.gif)
