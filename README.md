@@ -21,4 +21,4 @@ Source code is provided publicly on GitHub and meets quality coding standards. T
 * The Movie Database API
 
 ## Demo
-![demo_gif](./assets/images/Marvel Character Finder.gif)
+![demo_gif](./assets/images/marvel-wiki.gif)
