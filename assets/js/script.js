@@ -166,7 +166,7 @@ function searchCharacter(id) {
             charThumbnail.setAttribute("alt", characterObj.name);
             charName.textContent = characterObj.name;
             charDescription.textContent = characterObj.description;
-            charComics.textContent = "Comic List";
+            charComics.textContent = "Featured Comic Books and Series";
             charComics.setAttribute("href", characterObj.comics);
         }
     });
