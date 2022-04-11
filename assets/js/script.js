@@ -42,41 +42,43 @@ buttonEl.addEventListener("click", handleSearch);
     });
     }
 
+// prep array for autocomplete
 var search_terms = [];
 for (let i = 0; i < characterList.length; i++) {
     search_terms.push(characterList[i].name);
 }
 
-function autocompleteMatch(input) {
-  if (input == '') {
-    return [];
-  }
-  var reg = new RegExp(input, "i")
-  return search_terms.filter(function(term) {
-	  if (term.match(reg)) {
-  	  return term;
-	  }
-  });
-}
-
-function showResults(val) {
-    document.getElementById("result").style.display = "block";  
-    res = document.getElementById("result");
-    res.innerHTML = '';
-
-    let list = '';
-    let terms = autocompleteMatch(val);
-    let terms10 = terms.slice(0,10)
-    for (i=0; i<terms10.length; i++) {
-        list += '<li>' + terms[i] + '</li>';
-    }
-    res.innerHTML = '<ul>' + list + '</ul>';
-}
-
 // initialize page
 init();
 
-// functions
+// autocomplete functions
+function autocompleteMatch(input) {
+    if (input == '') {
+      return [];
+    }
+    var reg = new RegExp(input, "i")
+    return search_terms.filter(function(term) {
+        if (term.match(reg)) {
+          return term;
+        }
+    });
+  }
+  
+  function showResults(val) {
+      document.getElementById("result").style.display = "block";  
+      res = document.getElementById("result");
+      res.innerHTML = '';
+  
+      let list = '';
+      let terms = autocompleteMatch(val);
+      let terms10 = terms.slice(0,10)
+      for (i=0; i<terms10.length; i++) {
+          list += '<li>' + terms[i] + '</li>';
+      }
+      res.innerHTML = '<ul>' + list + '</ul>';
+  }
+
+// page load
 function init() {
     if (recentSearchContainerEl) {
         populateRecentSearches();
@@ -85,6 +87,7 @@ function init() {
     }
 }
 
+// search handler, loads character information based on page elements
 function handleSearch(event) {
     event.preventDefault();
     if (event.target.id == 'charImg') {
@@ -94,16 +97,14 @@ function handleSearch(event) {
         localStorage.setItem("search-character-name", inputEl.value);
     }
 
-    console.log('recentSearchContainerEl', recentSearchContainerEl)
     if (recentSearchContainerEl) {
-        console.log('checking redirect', recentSearchContainerEl)
         window.location.replace("./searchresults.html");
     } else {
         searchId();
     }
 }
 
-// main search function
+// main search function, searches character based on id, and searches movie based on character name
 function searchId() {
     var charName = localStorage.getItem("search-character-name");
     var charIndex = characterList.findIndex(e => e.name.toLowerCase() == charName.toLowerCase());
@@ -122,6 +123,7 @@ function searchId() {
     searchMovie(characterList[charIndex].searchString);
 }
 
+// repopulate the page when a character is found
 function resultReset() {
     charName.style.color = "black";
     charName.style.backgroundColor = "inherit";
@@ -132,6 +134,7 @@ function resultReset() {
     document.body.style.backgroundImage = "none";
 }
 
+// display character not found message and depopulates the page
 function noCharFound() {
     charName.textContent = "Sorry, we didn't find what you were looking for";
     charName.style.color = "white";
@@ -146,6 +149,7 @@ function noCharFound() {
     document.body.style.backgroundImage = "url('./assets/images/marvel-background.jpg')";
 }
 
+// fetch character data from Marvel API and appends to page
 function searchCharacter(id) {
     var requestById = "https://gateway.marvel.com/v1/public/characters/" + id + "?ts=" + ts + "&apikey=" + pubKey + "&hash=" + hashKey;
     fetch(requestById)
@@ -172,6 +176,7 @@ function searchCharacter(id) {
     });
 }
 
+// fetches movie data from the Movie Database API and appends to page
 function searchMovie(query) {
     var requestByQuery = "https://api.themoviedb.org/3/search/movie?api_key=c2d17b4b68756938636de8ad845e6940&query=" + query + "&page=1"
     fetch(requestByQuery)
@@ -180,7 +185,7 @@ function searchMovie(query) {
     })
     .then(function (data) {
         if(data.results.length === 0) {
-            movieContainerEl.textContent = "No Movies Found"; // TODO formatting?
+            movieContainerEl.textContent = "No Movies Found";
             return;
         }
 
@@ -228,8 +233,7 @@ function addToLocalStorage(characterObj) {
     }
     
     // Checking for duplicates and if present skip storing in localStorage!! 
-    charInLs = searchedCharacters.findIndex(e => e.name == characterObj.name)
-    console.log(searchedCharacters, characterObj.name, charInLs);
+    charInLs = searchedCharacters.findIndex(e => e.name == characterObj.name);
     if (charInLs >=0) {
         return;
     }
