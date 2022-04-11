@@ -8,10 +8,7 @@ form {
   position: relative;
 }
 
-/* #submitBtn {
-  z-index: -1;
-} */
-
+/* autocomplete styling */
 #result {
     padding: 3px;
     margin-top: 5%;
@@ -31,10 +28,8 @@ form {
   #result ul li:hover {
     background: #eee;
   }
-
-
-#result.custom-result {
-  margin-top: 15%;
-  margin-left: -20%;
-  position: absolute;
-}
+  #result.custom-result {
+    margin-top: 15%;
+    margin-left: -20%;
+    position: absolute;
+  }
