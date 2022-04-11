@@ -142,6 +142,7 @@ function noCharFound() {
     charComics.textContent = "";
     charContainerEl.classList.remove("border", "border-gray-300");
     movieSectionEl.classList.remove("border", "border-gray-300");
+    movieContainerEl.textContent = "";
     document.body.style.backgroundImage = "url('./assets/images/marvel-background.jpg')";
 }
 
