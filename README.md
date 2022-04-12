@@ -8,7 +8,7 @@ This application uses a CSS framework called [TailwindCSS](https://tailwindcss.c
 
 The UI is designed to be responsive to different device display widths and have a clean, modern, and minimal appearance.
 
-Source code is provided publicly on GitHub and meets quality coding standards. The application is deployed to GitHub Pages: [Marvel Character Finder]().
+Source code is provided publicly on GitHub and meets quality coding standards.
 
 ## Tech Stack
 * HTML
@@ -19,6 +19,9 @@ Source code is provided publicly on GitHub and meets quality coding standards. T
 * Algoria Autocomplete Function
 * The Marvel Comics API
 * The Movie Database API
+
+## Deployed Page
+[Marvel Wiki](https://rajeswarivmarimuthu.github.io/marvel-character-finder/).
 
 ## Demo
 ![demo_gif](./assets/images/marvel-wiki.gif)
