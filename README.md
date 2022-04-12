@@ -22,3 +22,6 @@ Source code is provided publicly on GitHub and meets quality coding standards. T
 
 ## Demo
 ![demo_gif](./assets/images/marvel-wiki.gif)
+
+## Presentation
+[Slides](https://docs.google.com/presentation/d/1ctXTwSMrKYSD_CGtJ4BZUhMyysFLyoq1iydTwvPc4Ms/edit?usp=sharing)
